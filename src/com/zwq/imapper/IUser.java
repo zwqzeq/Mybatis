@@ -15,10 +15,10 @@ public interface IUser {
 	public void addUser(User user);
 	
 	//修改用户信息
-	//public Boolean updateUser(User user);
+	public void updateUserByID(User user);
 	
 	//删除用户信息
-	//public Boolean deleteUser(int id);
+	public void deleteUserByID(int id);
 	 
 		
 }
