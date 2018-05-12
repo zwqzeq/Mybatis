@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- User.xml是一个映射文件 -->
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 在mybatis中，映射文件中的namespace是用于绑定Dao接口的，即面向接口编程。 当你的namespace绑定接口后，你可以不用写接口实现类，mybatis会通过该绑定自动 
+	帮 你找到对应要执行的SQL语句 -->
+<!--mapper命名空间namespace要写接口的全路径 -->
+<mapper namespace="com.zwq.imapper.IUser">
+
+	<!--ID要与接口中的方法名相同, parameterType传入的参数类型, resultType 返回的类型这里也为User类的全路径，
+	因为在全局配置文件Configuration.xml中为User类的全路径com.zwq.model.User设置了别名User，所
+	以此处直接用User即可 -->
+	<!-- 通过用户Id查询用户信息 -->
+	<select id="getOneUserByID" parameterType="INTEGER" resultType="User">
+		SELECT id,username,tel,address from user where id=#{id}
+	</select>
+
+
+    <!-- 通过用户名查询用户信息 -->
+	 <select id="getOneUserByName" parameterType="String" resultType="User"> 
+		SELECT id,username,tel,address from user where username=#{name}
+		 </select>
+
+
+
+
+	<!-- column表示的是从数据库中查询的属性, property表示的是实体对象的属性 -->
+	
+	<resultMap type="User" id="UserReasult"> 
+	
+	<!-- jdbcType 严格区分大小写，所以jdbcType="INTEGER"中INTEGER必须大写，不能为Integer -->
+	<id property="id" jdbcType="INTEGER" column="id"></id> 
+	<result property="username" jdbcType="VARCHAR" column="username"/> 
+	<result property="tel" jdbcType="VARCHAR" column="tel"/>
+	 <result property="address" jdbcType="VARCHAR" column="address"/>
+	  </resultMap>
+
+
+         <!-- 查询所有用户信息 -->
+	<select id="getAllUser" resultMap="UserReasult"> 
+	SELECT id,username,tel,address FROM user 
+	</select>
+
+
+<!--添加用户 -->
+<!--  <insert id="addUser" parameterType="User" >
+insert into user(id,username,tel,address)
+values(#{id},#{username},#{tel},#{address})
+</insert>
+-->
+
+
+
+</mapper>

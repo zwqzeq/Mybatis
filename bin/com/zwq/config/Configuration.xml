@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<!-- 配置文件的根元素 -->
+<configuration>
+
+	<!-- 加载类路径下的属性文件,这里路径一定要用/ -->
+	<properties resource="com/zwq/config/db.properties" />
+
+
+	<!-- 允许 JDBC 支持自动生成主键，需要驱动兼容。 如果useGeneratedKeys的值设置为 true 则这个设置强制使用自动生成主键，尽管一些驱动不能兼容但仍可正常工作（比如 
+		Derby）。 默认值false -->
+	<!-- useColumnLabel：使用列标签代替列名。不同的驱动在这方面会有不同的表现， 具体可参考相关驱动文档或通过测试这两种不同的模式来观察所用驱动的结果。useColumnLabel默认值true -->
+	<settings>
+		<setting name="useGeneratedKeys" value="false" />
+		<setting name="useColumnLabel" value="true" />
+	</settings>
+
+	<!-- 设置模型类的路径的别名 -->
+	<typeAliases>
+		<typeAlias alias="City" type="com.zwq.model.City" />
+		<typeAlias alias="User" type="com.zwq.model.User" />
+	</typeAliases>
+
+	<!-- 设置一个默认的连接环境信息 -->
+	<environments default="development">
+
+		<!-- 连接环境信息，取一个任意唯一的名字 -->
+		<environment id="development">
+
+			<!-- mybatis使用jdbc事务管理方式 -->
+			<transactionManager type="JDBC" />
+
+			<!--数据源  --><!-- mybatis不使用连接池方式来获取连接 -->
+			<dataSource type="UNPOOLED">
+			
+	         <!-- 方法一:
+			          通过Properties加载配置 ,必须使用<properties resource="com/zwq/config/db.properties" />后才能使用下面方法
+	         -->  
+				<!--驱动driver -->
+				<property name="driver" value="${driver}" />
+				<!--连接URL -->
+				<property name="url" value="${url}" />
+				<!--用户名 -->
+				<property name="username" value="${username}"/>
+				<!--密码 -->
+				<property name="password" value="${password}" />
+
+
+
+				<!-- 方法二：
+				          如果去掉上面加载属性文件<properties resource="com/zwq/config/db.properties"/>这一行 
+					则可以使用下面的方法 配置与数据库交互的4个必要属性 
+					<property name="driver" value="com.mysql.jdbc.Driver"/> 
+					<property name="url" value="jdbc:mysql://localhost:3306/mybatis?useSSL=false"/> 
+					<property name="username" value="root"/>
+				    <property name="password" value="13450376787zwq"/>
+			    -->
+
+
+			</dataSource>
+
+		</environment>
+	</environments>
+
+	<!-- 加载映射文件 -->
+	<mappers>
+		<mapper resource="com/zwq/config/User.xml" />
+	</mappers>
+
+</configuration>
