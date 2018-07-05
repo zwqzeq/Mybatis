@@ -19,12 +19,19 @@ public class Demo {
 	private static Reader reader;
 	private static SqlSession sqlSession;
 
+
 	
+
 	
 	/**
 	 * Mybatis开发流程：
 	 * 0. 配置环境：
 	 * 1. 新建工程，导入相关jar包----jdbc驱动包，log日志包，Mybatis驱动包
+	 *    先组织好包的框架：         a:   config包存放 属性文件（如日志，连数据库的属性） 和xml文件
+	 *                   b:   model包里面放 JavaBean类，从数据库中取出的数据以及要存到数据库中的数据都要先存到JavaBean类的对象中
+	 *                   c:   imapper包放  接口
+	 *                   d:   demo包放测试类
+     *
 	 * 2. 在源码中配置一个日志文件，用于打印日志log4j.properties
 	 * 3. 配置核心配置文件，配置文件中主要是配置连接数据库和事务管理的内容，文件名可以自定义，默认SqlMapConfig.xml
 	 *    或者将连接数据库中的属性封装到数据库配置文件db.properties中
@@ -126,8 +133,8 @@ public class Demo {
 		User user = new User();
 		user = iUser.getOneUserByID(id);
 		System.out.println("用户ID：" + user.getId());
-		System.out.println("用户名：" + user.getUsername());
-		System.out.println("用户电话：" + user.getTel());
+		System.out.println("用户名：" + user.getUserName());
+		System.out.println("用户电话：" + user.getTelphone());
 		System.out.println("用户地址：" + user.getAddress());
 		
 		
@@ -155,8 +162,8 @@ public class Demo {
 		IUser iUser = sqlSession.getMapper(IUser.class);
 		user = iUser.getOneUserByName(name);
 		System.out.println("用户ID：" + user.getId());
-		System.out.println("用户名：" + user.getUsername());
-		System.out.println("用户电话：" + user.getTel());
+		System.out.println("用户名：" + user.getUserName());
+		System.out.println("用户电话：" + user.getTelphone());
 		System.out.println("用户地址：" + user.getAddress());
 
 	}
@@ -172,8 +179,8 @@ public class Demo {
 		list = iUser.getAllUser();
 		for (User user : list) {
 			System.out.println("用户ID：" + user.getId());
-			System.out.println("用户名：" + user.getUsername());
-			System.out.println("用户电话：" + user.getTel());
+			System.out.println("用户名：" + user.getUserName());
+			System.out.println("用户电话：" + user.getTelphone());
 			System.out.println("用户地址：" + user.getAddress());
 
 		}
@@ -191,14 +198,14 @@ public class Demo {
 		User user = new User();
 
 		// 此处没有设置用户ID是因为数据库中id列设置的是主键（不可重复）且自增（也就是每次向数据库中插入一个用户数据，id值自动加一，不用手动设置id）
-		user.setUsername("qqwwzz");
-		user.setTel("03036665587");
-		user.setAddress("日本东京");
+		user.setUserName("abcdefghj");
+		user.setTelphone("63");
+		user.setAddress("上海");
 		iUser.addUser(user);
 		// 提交事务，如果不提交，则数据不能保存到数据库
 		sqlSession.commit();
-		user = iUser.getOneUserByName(user.getUsername());
-		System.out.println("添加ID为"+user.getId()+"的用户信息成功");	
+		user = iUser.getOneUserByName(user.getUserName());
+		System.out.println("添加ID为 "+user.getId()+",姓名为："+user.getUserName()+" 的用户信息成功");	
 	}
 
 	//根据用户ID删除一个用户信息
@@ -217,7 +224,7 @@ public class Demo {
 		IUser iUser = sqlSession.getMapper(IUser.class);
 		User user=new User();
 		user.setId(id);
-		user.setUsername("王修");
+		user.setUserName("王修");
 		iUser.updateUserByID(user);
         sqlSession.commit();
         System.out.println("修改ID为"+id+"的用户成功！");
@@ -227,11 +234,11 @@ public class Demo {
 	public static void main(String[] args) {
 		init();
 		//testgetOneUserById(1);
-		//testgetOneUserByName("zwq");		
+		//testgetOneUserByName("abcdef");		
 		//testgetAllUser();		
-		testaddUser();
-		testupdateUserByID(23);
-		//testdeleteUserByID(12);
+		//testaddUser();
+		testupdateUserByID(37);
+		//testdeleteUserByID(38);
 		sqlSession.close();
 	}
 

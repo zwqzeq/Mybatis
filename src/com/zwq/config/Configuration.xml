@@ -4,13 +4,15 @@
     PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <!-- 
-这是一个核心配置文件 
-作用：配置文件中主要是配置连接数据库和事务管理的内容，文件名可以自定义，默认SqlMapConfig.xml；此处使用Configuration.xml
+这是Mybatis的核心配置文件 
+作用：配置文件中主要是配置连接数据库和事务管理的内容，文件名可以自定
+义，默认SqlMapConfig.xml；此处使用Configuration.xml
 -->
 <!-- 配置文件的根元素 -->
 <configuration>
 
-	<!-- 加载类路径下的属性文件,用于连接数据库,这里路径一定要用/ --><!-- 属性：定义配置外在化 -->
+	<!-- 加载类路径下的属性文件,用于连接数据库,这里路径一定要用/不能为点. -->
+	<!-- 属性：定义配置外在化,引入 jdbc.properties-->
 	<properties resource="com/zwq/config/db.properties" />
 
 
@@ -20,35 +22,17 @@
 	<!-- 设置：定义 mybatis的一些全局性设置 -->
 	<settings>
 		<setting name="useGeneratedKeys" value="false" />
+		
 		<setting name="useColumnLabel" value="true" />
+		<!--开启驼峰命名转换Table:create_time到 Entity(createTime)-->
+      <setting name="mapUnderscoreToCamelCase" value="true"/>
+		
 	</settings>
-
-	<!-- 设置模型类的路径的别名 -->
+	<!-- 设置模型类(实体类)的路径的别名 -->
 	<typeAliases>
 		<typeAlias alias="City" type="com.zwq.model.City" />
 		<typeAlias alias="User" type="com.zwq.model.User" />
 	</typeAliases>
-
-
-
-<!-- 类型处理器：定义 Java类型与数据库中的数据类型之间的转换关系 
-<typeHandlers></typeHandlers>
--->
-
-<!-- 对象工厂 
-<objectFactory type=""></objectFactory>
--->
-
-<!-- 插件：mybatis的插件,插件可以修改 mybatis的内部运行规则
-<plugins>
-<plugin interceptor=""></plugin>
-</plugins>
- -->
-
-
-<!-- 类型处理器：定义 Java类型与数据库中的数据类型之间的转换关系
-<typeHandlers></typeHandlers>
- -->
 
 <!-- 环境变量：配置 mybatis的环境 ，以配置多个环境变量，比如使用多数据源时，就需要配置多个环境变量-->
 	<!-- 设置一个默认的连接环境信息 --><!-- 和spring整合后 environments配置将废除-->
@@ -59,59 +43,36 @@
 
 			<!--使用jdbc事务管理方式 -->
 			<transactionManager type="JDBC" />
-
 			<!--数据源  --><!-- 此处mybatis不使用连接池方式来获取连接 -->
 			<!-- 如果设置为<dataSource type="POOLED">则表示使用连接池方式来获取连接 -->
-			<dataSource type="UNPOOLED">
-			
+			<dataSource type="UNPOOLED">		
 	         <!-- 方法一:
-			          通过Properties加载配置 ,必须使用<properties resource="com/zwq/config/db.properties" />后才能使用下面方法
-	                             其中name和value的值必须相同，且和属性文件中的一致 
+			          通过Properties加载配置 ,必须使用<properties resource="com/zwq/config/db.properties" />后才能使用下面方法                         
 	         -->  
 				<!--驱动driver -->
-				<property name="driver" value="${driver}" />
+				<property name="driver" value="${jdbc.driver}" />
 				<!--连接URL -->
-				<property name="url" value="${url}" />
+				<property name="url" value="${jdbc.url}" />
 				<!--用户名 -->
-				<property name="username" value="${username}"/>
+				<property name="username" value="${jdbc.username}"/>
 				<!--密码 -->
-				<property name="password" value="${password}" />
-
-
-
-				<!-- 方法二：
+				<property name="password" value="${jdbc.password}" />
+			</dataSource>
+			
+               <!-- 方法二：
 				          如果去掉上面加载属性文件<properties resource="com/zwq/config/db.properties"/>这一行 
 					则可以使用下面的方法 配置与数据库交互的4个必要属性 
 					<property name="driver" value="com.mysql.jdbc.Driver"/> 
 					<property name="url" value="jdbc:mysql://localhost:3306/mybatis?useSSL=false"/> 
 					<property name="username" value="root"/>
 				    <property name="password" value="13450376787zwq"/>
-			    -->
-
-
-			</dataSource>
-
+			    -->			    
 		</environment>
 	</environments>
 
-<!-- 数据库厂商标识 
-<databaseIdProvider type=""></databaseIdProvider>
--->
-
-
-
-
 	<!-- 加载映射文件 -->
-	<!-- 两种引入方式 
-        方式一：单个引入        
-        <mapper resource="User.xml"/>
- -->
- <!-- 方式二：使用包扫描的方式批量引入Mapper
-        使用包扫描规则和上个一样
-        <package name="com.clj.UserMapper"/>
-  -->
-	<mappers>
+    <mappers>
 		<mapper resource="com/zwq/config/User.xml" />
 	</mappers>
-
+	
 </configuration>

@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<!-- User.xml是一个映射文件 -->
+<!-- User.xml是一个映射文件，操作数据库的SQL语句放在这个文件中 -->
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+
 <!-- 
 配置sql映射文件,文件名自定义，这里默认为User.xml,
 Mybatis与hibernate相区别的是：hibernate是通过操作映射文件对象来操作数据库，与sql无太大关系;mybatis的映射文件是用来写sql语句的
@@ -28,52 +32,60 @@ Mybatis与hibernate相区别的是：hibernate是通过操作映射文件对象�
 	 #{}:占位符号，起到占位作用，如果传入的是原始型，那么括号中的变量名称可以随意定义
 	-->
 	<!-- 通过用户Id查询用户信息 --><!--id=#{testid}括号中的名称任意-->
+	<!-- user_name as "userName"的作用是 ：处理 数据库中的列名和实体类中的属性名不一致；其中user_name是数据库中的列名，userName是实体类中的属性 -->
 	<select id="getOneUserByID" parameterType="int" resultType="User">
-		SELECT id,username,tel,address from user where id=#{id_random}
+		SELECT 
+		id,
+		user_name,
+		telephone as "telphone",
+		address
+		from t_users 
+		where id=#{id_random}
 	</select>
 
 
     <!-- 通过用户名查询用户信息 -->
 	 <select id="getOneUserByName" parameterType="String" resultType="User"> 
-		SELECT id,username,tel,address from user where username=#{name}
+		SELECT id,
+		user_name,
+		telephone as telphone,
+		address 
+		from t_users where user_name=#{oneUserName}
 		 </select>
 
 
 
 
-	<!-- column表示的是从数据库中查询的属性, property表示的是实体对象的属性 -->
+	<!-- column表示的是从数据库中查询的属性,property表示的是实体对象的属性 -->
+	<resultMap id="UserReasult" type="User" > 
 	
-	<resultMap type="User" id="UserReasult"> 
-	
-	<!-- jdbcType 严格区分大小写，所以jdbcType="INTEGER"中INTEGER必须大写，不能为Integer，否则报错 -->
-	<id property="id" jdbcType="INTEGER" column="id"></id> 
-	<result property="username" jdbcType="VARCHAR" column="username"/> 
-	<result property="tel" jdbcType="VARCHAR" column="tel"/>
-	 <result property="address" jdbcType="VARCHAR" column="address"/>
 	  </resultMap>
-
 
          <!-- 查询所有用户信息 -->
 	<select id="getAllUser" resultMap="UserReasult"> 
-	SELECT id,username,tel,address FROM user 
+	SELECT id,
+	user_name,
+	telephone as telphone,
+	address
+	FROM t_users 
 	</select>
 
 
 <!--添加用户 -->
  <insert id="addUser" parameterType="User" >
-insert into user(id,username,tel,address)
-values(#{id},#{username},#{tel},#{address})
+insert into t_users(id,user_name,telephone,address)
+values(#{id},#{userName},#{telphone},#{address})
 </insert>
 
 
 <!-- 删除用户 -->
 <delete id="deleteUserByID" parameterType="int">
-        delete from user where id=#{id}
+        delete from t_users where id=#{randomName}
 </delete>
     
     <!-- 修改用户 -->
     <update id="updateUserByID" parameterType="User">
-        update user set username=#{username} where id=#{id}
+        update t_users set user_name = #{userName} where id=#{id}
     </update>
 
 </mapper>

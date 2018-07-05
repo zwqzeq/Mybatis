@@ -4,36 +4,49 @@ public class User {
 	
       private int id;
       
-      private String username;
+      private String userName;
       
-      private String tel;
+      private String telphone;
       
       private String address;
-      
-      
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getUsername() {
-		return username;
+
+	public String getUserName() {
+		return userName;
 	}
-	public void setUsername(String username) {
-		this.username = username;
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
-	public String getTel() {
-		return tel;
+
+	public String getTelphone() {
+		return telphone;
 	}
-	public void setTel(String tel) {
-		this.tel = tel;
+
+	public void setTelphone(String telphone) {
+		this.telphone = telphone;
 	}
+
 	public String getAddress() {
 		return address;
 	}
+
 	public void setAddress(String address) {
 		this.address = address;
 	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", userName=" + userName + ", telphone=" + telphone + ", address=" + address + "]";
+	}
       
+       
+	
 }
